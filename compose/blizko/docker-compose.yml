@@ -2,25 +2,22 @@ db:
   image: db
   restart: always
   ports:
-    - "5432:5432"
+    - "5432"
 redis:
   image: redis
   restart: always
   ports:
-    - "6379:6379"
+    - "6379"
 memcached:
   image: memcached
   restart: always
   ports:
-    - "11211:11211"
+    - "11211"
 sphinx:
   image: sphinx
   restart: always
   ports:
-    - "9306:9306"
-    - "10809:10809"
+    - "9306"
+    - "10809"
   links:
     - db
-  volumes:
-    - /home/salteron/rails_applications/blizko/config:/sphinx/conf:ro
-    - /home/salteron/rails_applications/blizko/log:/sphinx/log
