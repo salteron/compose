@@ -16,7 +16,7 @@ RUN ln -sf /usr/share/zoneinfo/Asia/Yekaterinburg /etc/localtime
 RUN apt-get update
 RUN apt-get -y -q upgrade
 
-RUN apt-get -y -q install vim
+RUN apt-get -y -q install vim ssh
 
 # create init script
 RUN touch /root/init.sh

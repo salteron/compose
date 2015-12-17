@@ -9,14 +9,11 @@ RUN apt-get -y -q install libodbc1 unixodbc libpq5
 RUN dpkg -i /root/sphinx.deb
 RUN rm /root/sphinx.deb
 
+RUN mkdir -p /sphinx/data /sphinx/log /sphinx/conf
+ADD sphinx.conf /sphinx/conf/
+
 RUN echo "sleep 5" >> /root/init.sh
-RUN echo "indexer --config /sphinx/conf/development.sphinx.conf --all" >> /root/init.sh
-RUN echo "exec searchd --nodetach --config /sphinx/conf/development.sphinx.conf" >> /root/init.sh
+RUN echo "indexer --config /sphinx/conf/sphinx.conf --all" >> /root/init.sh
+RUN echo "exec searchd --nodetach --config /sphinx/conf/sphinx.conf" >> /root/init.sh
 
 ENTRYPOINT ["/root/init.sh"]
-
-RUN mkdir -p /sphinx/data /sphinx/log /sphinx/conf
-
-# run script: docker run -d -p 9306:9306 --restart=always -v ~/rails_applications/blizko/config:/sphinx/conf:ro --link db:db sphinx
-
-
