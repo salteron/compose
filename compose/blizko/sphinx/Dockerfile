@@ -1,5 +1,6 @@
 FROM scratchy
 
+RUN apt-get update
 RUN apt-get install -y -q libmysqlclient-dev curl
 
 # Sphinx
@@ -11,8 +12,6 @@ RUN rm /root/sphinx.deb
 RUN echo "sleep 5" >> /root/init.sh
 RUN echo "indexer --config /sphinx/conf/development.sphinx.conf --all" >> /root/init.sh
 RUN echo "exec searchd --nodetach --config /sphinx/conf/development.sphinx.conf" >> /root/init.sh
-
-EXPOSE 9306 10809
 
 ENTRYPOINT ["/root/init.sh"]
 

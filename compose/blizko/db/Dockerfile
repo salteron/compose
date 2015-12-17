@@ -14,12 +14,15 @@ RUN echo "listen_addresses='*'" >> /etc/postgresql/9.2/main/postgresql.conf
 RUN echo "ssl=false" >> /etc/postgresql/9.2/main/postgresql.conf
 RUN echo "plperl.on_init = 'use utf8; use re; package utf8; require \"utf8_heavy.pl\";'" >> /etc/postgresql/9.2/main/postgresql.conf
 
+ADD dump.sql /root/db/structure/
+
 # project db
 RUN /etc/init.d/postgresql start &&\
     while ps aux | grep "postgres: [s]tartup process" > /dev/null; do sleep 1;done &&\
     sudo -u postgres psql -c "CREATE USER docker WITH SUPERUSER PASSWORD 'docker';" &&\
     sudo -u postgres psql template1 -c "CREATE EXTENSION hstore;" &&\
     sudo -u postgres createdb -O docker docker &&\
+    cat /root/db/structure/dump.sql | psql -U docker docker &&\
     /etc/init.d/postgresql stop
 
 # entrypoint
@@ -27,7 +30,5 @@ RUN echo "exec sudo -u postgres /usr/lib/postgresql/9.2/bin/postgres --config-fi
 
 ENTRYPOINT ["/root/init.sh"]
 
-EXPOSE 5432
-
-# run script: docker run -d -p 5432:5432 --restart=always pg92
-# check script: psql -h localhost -U docker docker
+# run script: docker run -d -p 5432:5432 --restart=always db
+# check script: psql -h localhost -U docker docker -c 'select count(*) from products'
