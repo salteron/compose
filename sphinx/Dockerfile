@@ -18,6 +18,6 @@ ENTRYPOINT ["/root/init.sh"]
 
 RUN mkdir -p /sphinx/data /sphinx/log /sphinx/conf
 
-# run script: docker run -d -p 9306:9306 --restart=always -v ~/rails_applications/blizko/config:/sphinx/conf:ro --link blizko_db:db sphinx
+# run script: docker run -d -p 9306:9306 --restart=always -v ~/rails_applications/blizko/config:/sphinx/conf:ro --link db:db sphinx
 
 
